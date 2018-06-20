@@ -1,4 +1,4 @@
-package ee.vodyara.isikukood;
+package ee.vladislavg.isikukood;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;

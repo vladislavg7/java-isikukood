@@ -1,4 +1,4 @@
-package ee.vodyara.isikukood;
+package ee.vladislavg.isikukood;
 
 public final class IsikukoodException extends RuntimeException {
 
