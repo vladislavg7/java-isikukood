@@ -1,13 +1,11 @@
 package ee.vladislavg.isikukood;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,27 +40,30 @@ final class Utils {
     }
 
     static Boolean isValid(String personalCode) {
-        if (Strings.isNullOrEmpty(personalCode) || !personalCode.matches(Utils.PERSONAL_CODE_REGEX)) {
+        if (personalCode == null
+                || personalCode.isEmpty()
+                || !personalCode.matches(PERSONAL_CODE_REGEX)) {
             return false;
         }
 
         try {
-            Utils.parseDate(personalCode);
+            parseDateOfBirth(personalCode);
         } catch (DateTimeParseException e) {
             return false;
         }
 
-        return calculateControlNumber(personalCode).equals(parseControlNumber(personalCode));
+        int lastNumber = Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
+        return calculateControlNumber(personalCode).equals(lastNumber);
     }
 
     static LocalDate getDateOfBirth(String personalCode) {
         validatePersonalCode(personalCode);
-        return parseDate(personalCode);
+        return parseDateOfBirth(personalCode);
     }
 
     static Integer getAge(String personalCode) {
         validatePersonalCode(personalCode);
-        return Period.between(getDateOfBirth(personalCode), LocalDate.now()).getYears();
+        return Period.between(parseDateOfBirth(personalCode), LocalDate.now()).getYears();
     }
 
     static Gender getGender(String personalCode) {
@@ -85,19 +86,19 @@ final class Utils {
 
     static Integer getControlNumber(String personalCode) {
         validatePersonalCode(personalCode);
-        return parseControlNumber(personalCode);
+        return calculateControlNumber(personalCode);
     }
 
     private static Integer calculateControlNumber(String personalCode) {
-        List<Integer> personalCodeNumbers = Lists.charactersOf(personalCode.substring(0, personalCode.length() - 1))
-                .stream()
-                .map(Character::getNumericValue)
+        String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
+        List<Integer> numberList = Arrays.stream(numberArray)
+                .map(Integer::valueOf)
                 .collect(Collectors.toList());
         int sum = 0;
         int controlNumber;
 
-        for (int i = 0; i < 10; i++) {
-            sum += personalCodeNumbers.get(i) * Utils.MULTIPLIERS_1.get(i);
+        for (int i = 0; i < numberList.size(); i++) {
+            sum += numberList.get(i) * MULTIPLIERS_1.get(i);
         }
 
         controlNumber = sum % 11;
@@ -105,8 +106,8 @@ final class Utils {
         if (controlNumber == 10) {
             sum = 0;
 
-            for (int i = 0; i < 10; i++) {
-                sum += personalCodeNumbers.get(i) * Utils.MULTIPLIERS_2.get(i);
+            for (int i = 0; i < numberList.size(); i++) {
+                sum += numberList.get(i) * MULTIPLIERS_2.get(i);
             }
 
             controlNumber = sum % 11;
@@ -119,7 +120,7 @@ final class Utils {
         return controlNumber;
     }
 
-    private static LocalDate parseDate(String personalCode) {
+    private static LocalDate parseDateOfBirth(String personalCode) {
         String dateString = personalCode.substring(1, 7);
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
@@ -142,10 +143,6 @@ final class Utils {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return LocalDate.parse(dateString, formatter);
-    }
-
-    private static int parseControlNumber(String personalCode) {
-        return Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
     }
 
     private static void validatePersonalCode(String personalCode) {
