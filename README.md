@@ -8,9 +8,9 @@ class Test {
     public void test() {
         Isikukood isikukood = new Isikukood("47508030046");
         boolean isValid = isikukood.isValid();                      // true
-        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 03.08.1975
-        Gender gender = isikukood.getGender();                      // Gender.FEMALE
-        String genderCode = isikukood.getGender().getGenderCode();  // "F"
+        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
+        Gender gender = isikukood.getGender();                      // FEMALE
+        String genderCode = isikukood.getGender().getGenderCode();  // F
         int controlNumber = isikukood.getControlNumber();           // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class IsikukoodTest {
 
     @Test
-    public void checkValidPersonalCodes() {
+    public void checkValidPersonalCode() {
         List<String> validStringCodes = new ArrayList<>();
         validStringCodes.add("17605130008");
         validStringCodes.add("29912120004");
@@ -20,7 +20,7 @@ public class IsikukoodTest {
         validStringCodes.add("50109130003");
         validStringCodes.add("60302050016");
 
-        for (String personalCode: validStringCodes) {
+        for (String personalCode : validStringCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
             assertTrue(isikukood.isValid());
         }
@@ -33,14 +33,14 @@ public class IsikukoodTest {
         validLongCodes.add(50109130003L);
         validLongCodes.add(60302050016L);
 
-        for (Long personalCode: validLongCodes) {
+        for (Long personalCode : validLongCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
             assertTrue(isikukood.isValid());
         }
     }
 
     @Test
-    public void checkInvalidPersonalCodes() {
+    public void checkInvalidPersonalCode() {
         List<String> invalidStringCodes = new ArrayList<>();
         invalidStringCodes.add(null);
         invalidStringCodes.add("");
@@ -50,7 +50,7 @@ public class IsikukoodTest {
         invalidStringCodes.add("60319113016");
         invalidStringCodes.add("99999999999");
 
-        for (String personalCode: invalidStringCodes) {
+        for (String personalCode : invalidStringCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
             assertFalse(isikukood.isValid());
         }
@@ -64,7 +64,7 @@ public class IsikukoodTest {
         invalidLongCodes.add(60319113016L);
         invalidLongCodes.add(99999999999L);
 
-        for (Long personalCode: invalidLongCodes) {
+        for (Long personalCode : invalidLongCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
             assertFalse(isikukood.isValid());
         }
