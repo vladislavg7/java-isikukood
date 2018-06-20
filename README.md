@@ -7,17 +7,17 @@ class Test {
     
     public void test() {
         Isikukood isikukood = new Isikukood("47508030046");
-        boolean isValid = isikukood.isValid(); // true
-        LocalDate dateOfBirth = isikukood.getDateOfBirth(); // 03.08.1975
-        Gender gender = isikukood.getGender(); // Gender.FEMALE
-        String genderCode = isikukood.getGender().getGenderCode(); // "F"
-        int controlNumber = isikukood.getControlNumber(); // 6
+        boolean isValid = isikukood.isValid();                      // true
+        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 03.08.1975
+        Gender gender = isikukood.getGender();                      // Gender.FEMALE
+        String genderCode = isikukood.getGender().getGenderCode();  // "F"
+        int controlNumber = isikukood.getControlNumber();           // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");
-        isValid = invalidIsikukood.isValid(); // false
+        isValid = invalidIsikukood.isValid();                       // false
         
         try {
-            dateOfBirth = invalidIsikukood.getDateOfBirth(); // throws exception
+            dateOfBirth = invalidIsikukood.getDateOfBirth();        // throws exception
         } catch (IsikukoodException e) {
             e.printStackTrace();
         }
