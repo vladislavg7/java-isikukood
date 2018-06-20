@@ -39,7 +39,7 @@ final class Utils {
         MULTIPLIERS_2.add(3);
     }
 
-    static Boolean isValid(String personalCode) {
+    static boolean isValid(String personalCode) {
         if (personalCode == null
                 || personalCode.isEmpty()
                 || !personalCode.matches(PERSONAL_CODE_REGEX)) {
@@ -53,7 +53,7 @@ final class Utils {
         }
 
         int lastNumber = Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
-        return calculateControlNumber(personalCode).equals(lastNumber);
+        return parseControlNumber(personalCode) == lastNumber;
     }
 
     static LocalDate getDateOfBirth(String personalCode) {
@@ -61,7 +61,7 @@ final class Utils {
         return parseDateOfBirth(personalCode);
     }
 
-    static Integer getAge(String personalCode) {
+    static int getAge(String personalCode) {
         validatePersonalCode(personalCode);
         return Period.between(parseDateOfBirth(personalCode), LocalDate.now()).getYears();
     }
@@ -84,12 +84,12 @@ final class Utils {
         }
     }
 
-    static Integer getControlNumber(String personalCode) {
+    static int getControlNumber(String personalCode) {
         validatePersonalCode(personalCode);
-        return calculateControlNumber(personalCode);
+        return parseControlNumber(personalCode);
     }
 
-    private static Integer calculateControlNumber(String personalCode) {
+    private static int parseControlNumber(String personalCode) {
         String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
         List<Integer> numberList = Arrays.stream(numberArray)
                 .map(Integer::valueOf)
