@@ -1,4 +1,4 @@
-package ee.vladislavg.isikukood;
+package com.github.vladislavgoltjajev.isikukood;
 
 import java.time.LocalDate;
 import java.time.Period;

@@ -1,4 +1,4 @@
-package ee.vladislavg.isikukood;
+package com.github.vladislavgoltjajev.isikukood;
 
 public final class IsikukoodException extends RuntimeException {
 
