@@ -24,19 +24,6 @@ public class IsikukoodTest {
             Isikukood isikukood = new Isikukood(personalCode);
             assertTrue(isikukood.isValid());
         }
-
-        List<Long> validLongCodes = new ArrayList<>();
-        validLongCodes.add(17605130008L);
-        validLongCodes.add(29912120004L);
-        validLongCodes.add(34503020000L);
-        validLongCodes.add(47508030046L);
-        validLongCodes.add(50109130003L);
-        validLongCodes.add(60302050016L);
-
-        for (Long personalCode : validLongCodes) {
-            Isikukood isikukood = new Isikukood(personalCode);
-            assertTrue(isikukood.isValid());
-        }
     }
 
     @Test
@@ -54,20 +41,6 @@ public class IsikukoodTest {
             Isikukood isikukood = new Isikukood(personalCode);
             assertFalse(isikukood.isValid());
         }
-
-        List<Long> invalidLongCodes = new ArrayList<>();
-        invalidLongCodes.add(null);
-        invalidLongCodes.add(0L);
-        invalidLongCodes.add(123L);
-        invalidLongCodes.add(37605030291L);
-        invalidLongCodes.add(77605030291L);
-        invalidLongCodes.add(60319113016L);
-        invalidLongCodes.add(99999999999L);
-
-        for (Long personalCode : invalidLongCodes) {
-            Isikukood isikukood = new Isikukood(personalCode);
-            assertFalse(isikukood.isValid());
-        }
     }
 
     @Test
@@ -79,7 +52,7 @@ public class IsikukoodTest {
 
         for (String personalCode : malePersonalCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
-            assertEquals(Gender.MALE, isikukood.getGender());
+            assertEquals("M", isikukood.getGender());
         }
 
         List<String> femalePersonalCodes = new ArrayList<>();
@@ -89,7 +62,7 @@ public class IsikukoodTest {
 
         for (String personalCode : femalePersonalCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
-            assertEquals(Gender.FEMALE, isikukood.getGender());
+            assertEquals("F", isikukood.getGender());
         }
     }
 

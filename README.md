@@ -1,5 +1,5 @@
 # java-isikukood
-Library for working with Estonian personal identification codes.
+Library for parsing Estonian personal identification codes.
 
 ## Usage
 ```java
@@ -9,8 +9,7 @@ class Test {
         Isikukood isikukood = new Isikukood("47508030046");
         boolean isValid = isikukood.isValid();                      // true
         LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
-        Gender gender = isikukood.getGender();                      // FEMALE
-        String genderCode = isikukood.getGender().getGenderCode();  // F
+        Gender gender = isikukood.getGender();                      // F
         int controlNumber = isikukood.getControlNumber();           // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");
@@ -35,7 +34,7 @@ class Test {
   </tr>
   <tr>
     <td>Isikukood</td>
-    <td>String|Long personalCode</td>
+    <td>String personalCode</td>
     <td>Isikukood</td>
     <td>Creates an instance of the Isikukood object.</td>
   </tr>
@@ -54,8 +53,8 @@ class Test {
   <tr>
      <td>getGender</td>
      <td>-</td>
-     <td>Gender</td>
-     <td>Returns the person's gender. The Gender object contains codes ("M" and "F") that can be extracted. Throws an exception if the personal code is invalid.</td>
+     <td>String</td>
+     <td>Returns the person's gender. Throws an exception if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getAge</td>
