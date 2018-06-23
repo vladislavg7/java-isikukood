@@ -1,16 +1,21 @@
 plugins {
+    id 'com.jfrog.bintray' version '1.8.2'
+    id 'maven-publish'
     id 'java'
     id 'java-library'
 }
 
-group 'ee.vladislavg'
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+group 'com.github.vladislavgoltjajev'
 version '1.0'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+apply from: 'bintray.gradle'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'

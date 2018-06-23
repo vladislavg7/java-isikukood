@@ -1,0 +1,116 @@
+ext {
+    bintrayRepo = rootProject.name
+    bintrayName = rootProject.name
+    publishedGroupId = group
+    artifactId = rootProject.name
+
+    libraryName = rootProject.name
+    libraryDescription = 'Library for parsing Estonian personal identification codes.'
+
+    siteUrl = 'https://github.com/vladislavgoltjajev/java-isikukood'
+    gitUrl = 'https://github.com/vladislavgoltjajev/java-isikukood.git'
+
+    libraryVersion = version
+
+    developerId = 'vladislavg'
+    developerName = 'Vladislav Goltjajev'
+    developerEmail = 'vladislav.goltjajev@gmail.com'
+
+    licenseName = 'The MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ['MIT']
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name licenseName
+            url licenseUrl
+            distribution 'repo'
+        }
+    }
+
+    developers {
+        developer {
+            id developerId
+            name developerName
+            email developerEmail
+        }
+    }
+
+    scm {
+        url 'https://github.com/vladislavgoltjajev/java-isikukood'
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+
+            groupId publishedGroupId
+            artifactId artifactId
+            version libraryVersion
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', libraryDescription)
+                root.appendNode('name', libraryName)
+                root.appendNode('url', siteUrl)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty('bintray.user')
+    key = properties.getProperty('bintray.apikey')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = bintrayName
+        name = bintrayRepo
+        licenses = allLicenses
+        vcsUrl = gitUrl
+        publicDownloadNumbers = true
+
+        version {
+            name = libraryVersion
+            desc = libraryVersion
+            released = new Date()
+
+            gpg {
+                sign = true
+                passphrase = properties.getProperty('bintray.gpg.password')
+            }
+        }
+    }
+}
