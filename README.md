@@ -62,7 +62,7 @@ class Test {
     <td>isValid</td>
     <td>-</td>
     <td>boolean</td>
-    <td>Checks if the personal code is valid. Throws an exception if the personal code is invalid.</td>
+    <td>Checks if the personal code is valid.</td>
   </tr>
   <tr>
     <td>getDateOfBirth</td>
