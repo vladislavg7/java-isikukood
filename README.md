@@ -1,6 +1,6 @@
 # java-isikukood [![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
 
-Library for parsing Estonian personal identification codes.
+Extract personal data from an Estonian personal identification code (isikukood) with this lightweight library.
 
 ## Import
 The library is available on Maven Central and JCenter.
@@ -21,6 +21,7 @@ dependencies {
 ```
 
 ## Usage
+The library requires at least Java 8.
 ```java
 class Test {
     
