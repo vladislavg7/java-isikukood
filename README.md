@@ -1,7 +1,6 @@
-# java-isikukood
-Library for parsing Estonian personal identification codes.  
-  
-[![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
+# java-isikukood [![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
+
+Library for parsing Estonian personal identification codes.
 
 ## Import
 The library is available on Maven Central and JCenter.
