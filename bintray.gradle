@@ -1,3 +1,10 @@
+// Create a file named local.properties in the root directory, add it to .gitignore.
+// Add the following properties to local.properties:
+// bintray.user=Bintray username
+// bintray.apikey=Bintray API key
+// bintray.gpg.password=Password for the GPG key
+// Run the publishing/bintrayUpload task to upload the artifacts to Bintray.
+
 ext {
     bintrayRepo = rootProject.name
     bintrayName = rootProject.name

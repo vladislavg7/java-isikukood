@@ -11,72 +11,46 @@ import java.util.stream.Collectors;
 public final class Isikukood {
 
     private final String personalCode;
+    private final Validator validator = new Validator();
 
     public Isikukood(String personalCode) {
         this.personalCode = personalCode;
     }
 
     public boolean isValid() {
-        if (personalCode == null
-                || personalCode.isEmpty()
-                || !personalCode.matches("^\\d{11}$")) {
-            return false;
-        }
-
-        try {
-            parseDateOfBirth();
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-
-        int lastNumber = Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
-        return parseControlNumber() == lastNumber;
+        return validator.isValid();
     }
 
     public LocalDate getDateOfBirth() {
-        validatePersonalCode();
+        validator.validateAllExceptControlNumber();
         return parseDateOfBirth();
     }
 
-    /**
-     * Returns the gender from the identification code.
-     * The gender is based on the first number of the code:
-     * odd  - male
-     * even - female
-     *
-     * @return Gender.
-     */
     public String getGender() {
-        validatePersonalCode();
+        validator.validateAllExceptControlNumber();
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
-        if (genderIdentifier % 2 == 0) {
-            return "F";
+        switch (genderIdentifier) {
+            case 1:
+            case 3:
+            case 5:
+                return "M";
+            case 2:
+            case 4:
+            case 6:
+                return "F";
+            default:
+                throw new IsikukoodException(Validator.INVALID_CODE_ERROR);
         }
-
-        return "M";
     }
 
     public int getAge() {
-        validatePersonalCode();
+        validator.validateAllExceptControlNumber();
         return Period.between(parseDateOfBirth(), LocalDate.now()).getYears();
     }
 
     public int getControlNumber() {
-        validatePersonalCode();
-        return parseControlNumber();
-    }
-
-    /**
-     * Calculates the control number for the first 10 numbers of the identification code.
-     * The calculation involves multiplying each of those numbers with its corresponding multiplier,
-     * summing them up and calculating the modulo 11 value.
-     * If the value is 10, the operation is repeated with a different set of multipliers.
-     * If the value is 10 again, the control number is 0.
-     *
-     * @return Control number.
-     */
-    private int parseControlNumber() {
+        validator.validateAllExceptControlNumber();
         String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
         List<Integer> numberList = Arrays.stream(numberArray)
                 .map(Integer::valueOf)
@@ -109,16 +83,6 @@ public final class Isikukood {
         return controlNumber;
     }
 
-    /**
-     * Calculates the date of birth from the identification code.
-     * The birth year is based on the first number of the first number of the code:
-     * 1 or 2 - 1800-1899
-     * 3 or 4 - 1900-1999
-     * 5 or 6 - 2000-2099
-     * Higher numbers will most likely indicate the years 2100-2199.
-     *
-     * @return Date of birth.
-     */
     private LocalDate parseDateOfBirth() {
         String dateString = personalCode.substring(1, 7);
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
@@ -137,16 +101,54 @@ public final class Isikukood {
                 dateString = "20" + dateString;
                 break;
             default:
-                dateString = "21" + dateString;
+                throw new IsikukoodException(Validator.INVALID_CODE_ERROR);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return LocalDate.parse(dateString, formatter);
     }
 
-    private void validatePersonalCode() {
-        if (!isValid()) {
-            throw new IsikukoodException("Invalid Estonian personal identification code");
+    private final class Validator {
+
+        static final String INVALID_CODE_ERROR = "Invalid Estonian personal identification code";
+
+        boolean isValid() {
+            return isValidExceptControlNumber() && hasValidControlNumber();
+        }
+
+        boolean isValidExceptControlNumber() {
+            return isNotNullAndHasValidContent()
+                    && hasValidGender()
+                    && hasValidDateOfBirth();
+        }
+
+        boolean isNotNullAndHasValidContent() {
+            return personalCode != null && !personalCode.isEmpty() && personalCode.matches("^\\d{11}$");
+        }
+
+        boolean hasValidGender() {
+            return personalCode.matches("^[1-6]\\d{10}$");
+        }
+
+        boolean hasValidDateOfBirth() {
+            try {
+                parseDateOfBirth();
+            } catch (DateTimeParseException e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        boolean hasValidControlNumber() {
+            int lastNumber = Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
+            return getControlNumber() == lastNumber;
+        }
+
+        void validateAllExceptControlNumber() {
+            if (!isValidExceptControlNumber()) {
+                throw new IsikukoodException(INVALID_CODE_ERROR);
+            }
         }
     }
 }

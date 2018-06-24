@@ -1,5 +1,25 @@
 # java-isikukood
-Library for parsing Estonian personal identification codes.
+Library for parsing Estonian personal identification codes.  
+  
+[![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
+
+## Import
+The library is available on Maven Central and JCenter.
+### Gradle
+```groovy
+dependencies {
+    compile group: 'com.github.vladislavgoltjajev', name: 'java-isikukood', version: '1.1'
+}
+```
+### Maven
+```xml
+<dependency>
+    <groupId>com.github.vladislavgoltjajev</groupId>
+    <artifactId>java-isikukood</artifactId>
+    <version>1.1</version>
+    <type>pom</type>
+</dependency>
+```
 
 ## Usage
 ```java
