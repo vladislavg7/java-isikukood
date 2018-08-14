@@ -29,7 +29,7 @@ class Test {
         Isikukood isikukood = new Isikukood("47508030046");
         boolean isValid = isikukood.isValid();                      // true
         LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
-        Gender gender = isikukood.getGender();                      // F
+        String gender = isikukood.getGender();                      // F
         int controlNumber = isikukood.getControlNumber();           // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");
