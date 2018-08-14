@@ -87,4 +87,12 @@ public class IsikukoodTest {
         isikukood = new Isikukood("60302050016");
         assertEquals(6, isikukood.getControlNumber());
     }
+
+    @Test
+    public void getAge() {
+        Isikukood isikukood = new Isikukood("34503020000");
+        assertTrue(isikukood.getAge() >= 73);
+        isikukood = new Isikukood("60302050016");
+        assertTrue(isikukood.getAge() >= 15);
+    }
 }

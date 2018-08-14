@@ -74,10 +74,10 @@ public final class Isikukood {
             }
 
             controlNumber = sum % 11;
-        }
 
-        if (controlNumber == 10) {
-            return 0;
+            if (controlNumber == 10) {
+                return 0;
+            }
         }
 
         return controlNumber;
