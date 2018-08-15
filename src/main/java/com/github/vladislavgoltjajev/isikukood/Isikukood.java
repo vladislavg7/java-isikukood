@@ -10,62 +10,71 @@ import java.util.stream.Collectors;
 
 public final class Isikukood {
 
-    private final String personalCode;
-    private final Validator validator = new Validator();
+    private String personalCode;
+    private String gender;
+    private LocalDate dateOfBirth;
+    private Integer controlNumber;
 
     public Isikukood(String personalCode) {
         this.personalCode = personalCode;
+        parseAndSetData();
     }
 
-    public boolean isValid() {
-        return validator.isValid();
-    }
-
-    public LocalDate getDateOfBirth() {
-        validator.validateAllExceptControlNumber();
-        return parseDateOfBirth();
+    public Boolean isValid() {
+        return gender != null
+                && dateOfBirth != null
+                && controlNumber != null;
     }
 
     public String getGender() {
-        validator.validateAllExceptControlNumber();
+        validate();
+        return gender;
+    }
+
+    public Integer getAge() {
+        validate();
+        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+    }
+
+    public LocalDate getDateOfBirth() {
+        validate();
+        return dateOfBirth;
+    }
+
+    public Integer getControlNumber() {
+        validate();
+        return controlNumber;
+    }
+
+    private void parseAndSetGender() {
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
         switch (genderIdentifier) {
             case 1:
             case 3:
             case 5:
-                return "M";
-            case 2:
-            case 4:
-            case 6:
-                return "F";
+                gender = "M";
+                break;
             default:
-                throw new IsikukoodException(Validator.INVALID_CODE_ERROR);
+                gender = "F";
         }
     }
 
-    public int getAge() {
-        validator.validateAllExceptControlNumber();
-        return Period.between(parseDateOfBirth(), LocalDate.now()).getYears();
-    }
-
-    public int getControlNumber() {
-        validator.validateAllExceptControlNumber();
+    private void parseAndSetControlNumber() {
         String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
         List<Integer> numberList = Arrays.stream(numberArray)
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());
         int sum = 0;
-        int controlNumber;
         int[] multipliers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
 
         for (int i = 0; i < numberList.size(); i++) {
             sum += numberList.get(i) * multipliers[i];
         }
 
-        controlNumber = sum % 11;
+        int parsedControlNumber = sum % 11;
 
-        if (controlNumber == 10) {
+        if (parsedControlNumber == 10) {
             sum = 0;
             multipliers = new int[]{3, 4, 5, 6, 7, 8, 9, 1, 2, 3};
 
@@ -73,17 +82,19 @@ public final class Isikukood {
                 sum += numberList.get(i) * multipliers[i];
             }
 
-            controlNumber = sum % 11;
+            parsedControlNumber = sum % 11;
 
-            if (controlNumber == 10) {
-                return 0;
+            if (parsedControlNumber == 10) {
+                parsedControlNumber = 0;
             }
         }
 
-        return controlNumber;
+        if (parsedControlNumber == Character.getNumericValue(personalCode.charAt(personalCode.length() - 1))) {
+            controlNumber = parsedControlNumber;
+        }
     }
 
-    private LocalDate parseDateOfBirth() {
+    private void parseAndSetDateOfBirth() {
         String dateString = personalCode.substring(1, 7);
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
@@ -96,59 +107,36 @@ public final class Isikukood {
             case 4:
                 dateString = "19" + dateString;
                 break;
-            case 5:
-            case 6:
-                dateString = "20" + dateString;
-                break;
             default:
-                throw new IsikukoodException(Validator.INVALID_CODE_ERROR);
+                dateString = "20" + dateString;
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return LocalDate.parse(dateString, formatter);
+
+        try {
+            dateOfBirth = LocalDate.parse(dateString, formatter);
+        } catch (DateTimeParseException e) {
+            // Do nothing
+        }
     }
 
-    private final class Validator {
+    private void parseAndSetData() {
+        if (personalCode != null
+                && !personalCode.isEmpty()
+                && personalCode.matches("^[1-6]\\d{2}(0[1-9]|1[0-2])([0-2]\\d|3[01])\\d{4}$")) {
+            parseAndSetGender();
+            parseAndSetDateOfBirth();
 
-        static final String INVALID_CODE_ERROR = "Invalid Estonian personal identification code";
-
-        boolean isValid() {
-            return isValidExceptControlNumber() && hasValidControlNumber();
-        }
-
-        boolean isValidExceptControlNumber() {
-            return isNotNullAndHasValidContent()
-                    && hasValidGender()
-                    && hasValidDateOfBirth();
-        }
-
-        boolean isNotNullAndHasValidContent() {
-            return personalCode != null && !personalCode.isEmpty() && personalCode.matches("^\\d{11}$");
-        }
-
-        boolean hasValidGender() {
-            return personalCode.matches("^[1-6]\\d{10}$");
-        }
-
-        boolean hasValidDateOfBirth() {
-            try {
-                parseDateOfBirth();
-            } catch (DateTimeParseException e) {
-                return false;
+            // No need to calculate the control number if the personal code is already invalid
+            if (dateOfBirth != null) {
+                parseAndSetControlNumber();
             }
-
-            return true;
         }
+    }
 
-        boolean hasValidControlNumber() {
-            int lastNumber = Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
-            return getControlNumber() == lastNumber;
-        }
-
-        void validateAllExceptControlNumber() {
-            if (!isValidExceptControlNumber()) {
-                throw new IsikukoodException(INVALID_CODE_ERROR);
-            }
+    private void validate() {
+        if (!isValid()) {
+            throw new IsikukoodException("Invalid Estonian personal identification code: " + personalCode);
         }
     }
 }

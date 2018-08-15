@@ -7,7 +7,7 @@ The library is available on Maven Central and JCenter.
 ### Gradle
 ```groovy
 dependencies {
-    compile group: 'com.github.vladislavgoltjajev', name: 'java-isikukood', version: '1.2'
+    compile('com.github.vladislavgoltjajev:java-isikukood:1.3')
 }
 ```
 ### Maven
@@ -15,8 +15,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>1.2</version>
-    <type>pom</type>
+    <version>1.3</version>
 </dependency>
 ```
 
@@ -27,16 +26,16 @@ class Test {
     
     public void test() {
         Isikukood isikukood = new Isikukood("47508030046");
-        boolean isValid = isikukood.isValid();                      // true
+        Boolean isValid = isikukood.isValid();                      // true
         LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
         String gender = isikukood.getGender();                      // F
-        int controlNumber = isikukood.getControlNumber();           // 6
+        Integer controlNumber = isikukood.getControlNumber();           // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");
         isValid = invalidIsikukood.isValid();                       // false
         
         try {
-            dateOfBirth = invalidIsikukood.getDateOfBirth();        // throws exception
+            dateOfBirth = invalidIsikukood.getDateOfBirth();        // throws IsikukoodException
         } catch (IsikukoodException e) {
             e.printStackTrace();
         }
@@ -61,7 +60,7 @@ class Test {
   <tr>
     <td>isValid</td>
     <td>-</td>
-    <td>boolean</td>
+    <td>Boolean</td>
     <td>Checks if the personal code is valid.</td>
   </tr>
   <tr>
@@ -79,13 +78,13 @@ class Test {
    <tr>
      <td>getAge</td>
      <td>-</td>
-     <td>int</td>
+     <td>Integer</td>
      <td>Returns the person's age. Throws an exception if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getControlNumber</td>
      <td>-</td>
-     <td>int</td>
+     <td>Integer</td>
      <td>Returns the personal code's control number. Throws an exception if the personal code is invalid.</td>
    </tr>
 </table>

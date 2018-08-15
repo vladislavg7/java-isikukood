@@ -19,6 +19,8 @@ public class IsikukoodTest {
         validStringCodes.add("47508030046");
         validStringCodes.add("50109130003");
         validStringCodes.add("60302050016");
+        validStringCodes.add("60002290003");
+        validStringCodes.add("39912310174");
 
         for (String personalCode : validStringCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
@@ -36,6 +38,7 @@ public class IsikukoodTest {
         invalidStringCodes.add("77605030291");
         invalidStringCodes.add("60319113016");
         invalidStringCodes.add("99999999999");
+        invalidStringCodes.add("39912310173");
 
         for (String personalCode : invalidStringCodes) {
             Isikukood isikukood = new Isikukood(personalCode);
@@ -83,9 +86,9 @@ public class IsikukoodTest {
     @Test
     public void getControlNumber() {
         Isikukood isikukood = new Isikukood("34503020000");
-        assertEquals(0, isikukood.getControlNumber());
+        assertEquals(new Integer(0), isikukood.getControlNumber());
         isikukood = new Isikukood("60302050016");
-        assertEquals(6, isikukood.getControlNumber());
+        assertEquals(new Integer(6), isikukood.getControlNumber());
     }
 
     @Test
@@ -94,5 +97,19 @@ public class IsikukoodTest {
         assertTrue(isikukood.getAge() >= 73);
         isikukood = new Isikukood("60302050016");
         assertTrue(isikukood.getAge() >= 15);
+    }
+
+    @Test
+    public void checkThrownException() {
+        Isikukood isikukood = new Isikukood("123");
+
+        try {
+            isikukood.getGender();
+        } catch (Exception e) {
+            assertEquals("IsikukoodException", e.getClass().getSimpleName());
+            return;
+        }
+
+        fail();
     }
 }
