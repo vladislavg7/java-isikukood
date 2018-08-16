@@ -31,11 +31,6 @@ public final class Isikukood {
         return gender;
     }
 
-    public Integer getAge() {
-        validate();
-        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
-    }
-
     public LocalDate getDateOfBirth() {
         validate();
         return dateOfBirth;
@@ -46,6 +41,16 @@ public final class Isikukood {
         return controlNumber;
     }
 
+    public Integer getAge() {
+        validate();
+        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+    }
+
+    /**
+     * The first digit of the personal code shows the person's gender.
+     * 1, 3, 5 - male.
+     * 2, 4, 6 - female.
+     */
     private void parseAndSetGender() {
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
@@ -60,6 +65,48 @@ public final class Isikukood {
         }
     }
 
+    /**
+     * Digits 2 through 7 of the personal code show the person's birth date in the format yyddMM.
+     * Using the first digit, it is possible to acquire the person's full year of birth.
+     * 1, 2 - years 1800-1899.
+     * 3, 4 - years 1900-1999.
+     * 5, 6 - years 2000-2099.
+     */
+    private void parseAndSetDateOfBirth() {
+        String dateString = personalCode.substring(1, 7);
+        int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
+
+        switch (genderIdentifier) {
+            case 1:
+            case 2:
+                dateString = "18" + dateString;
+                break;
+            case 3:
+            case 4:
+                dateString = "19" + dateString;
+                break;
+            default:
+                dateString = "20" + dateString;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        try {
+            dateOfBirth = LocalDate.parse(dateString, formatter);
+        } catch (DateTimeParseException e) {
+            // Do nothing
+        }
+    }
+
+    /**
+     * The last digit of the personal code shows the control number.
+     * The control number is calculated by multiplying the first 10 digits of the personal code by the corresponding
+     * number in an array of multipliers [1, 2, 3, 4, 5, 6, 7, 8, 9, 1], summing up each result and calculating
+     * the remainder of the sum divided by 11.
+     * If the control number is 10, the process is repeated with a different array of multipliers
+     * [3, 4, 5, 6, 7, 8, 9, 1, 2, 3].
+     * If the control number is 10 again, it is set to 0.
+     */
     private void parseAndSetControlNumber() {
         String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
         List<Integer> numberList = Arrays.stream(numberArray)
@@ -94,36 +141,10 @@ public final class Isikukood {
         }
     }
 
-    private void parseAndSetDateOfBirth() {
-        String dateString = personalCode.substring(1, 7);
-        int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
-
-        switch (genderIdentifier) {
-            case 1:
-            case 2:
-                dateString = "18" + dateString;
-                break;
-            case 3:
-            case 4:
-                dateString = "19" + dateString;
-                break;
-            default:
-                dateString = "20" + dateString;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        try {
-            dateOfBirth = LocalDate.parse(dateString, formatter);
-        } catch (DateTimeParseException e) {
-            // Do nothing
-        }
-    }
-
     private void parseAndSetData() {
         if (personalCode != null
                 && !personalCode.isEmpty()
-                && personalCode.matches("^[1-6]\\d{2}(0[1-9]|1[0-2])([0-2]\\d|3[01])\\d{4}$")) {
+                && personalCode.matches("^[1-6]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{4}$")) {
             parseAndSetGender();
             parseAndSetDateOfBirth();
 

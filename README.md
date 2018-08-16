@@ -7,7 +7,7 @@ The library is available on Maven Central and JCenter.
 ### Gradle
 ```groovy
 dependencies {
-    compile('com.github.vladislavgoltjajev:java-isikukood:1.3')
+    compile('com.github.vladislavgoltjajev:java-isikukood:1.4')
 }
 ```
 ### Maven
@@ -15,7 +15,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ class Test {
         Boolean isValid = isikukood.isValid();                      // true
         LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
         String gender = isikukood.getGender();                      // F
-        Integer controlNumber = isikukood.getControlNumber();           // 6
+        Integer controlNumber = isikukood.getControlNumber();       // 6
         
         Isikukood invalidIsikukood = new Isikukood("123");
         isValid = invalidIsikukood.isValid();                       // false
@@ -73,13 +73,13 @@ class Test {
      <td>getGender</td>
      <td>-</td>
      <td>String</td>
-     <td>Returns the person's gender. Throws an exception if the personal code is invalid.</td>
+     <td>Returns the person's gender ("M" or "F"). Throws an exception if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getAge</td>
      <td>-</td>
      <td>Integer</td>
-     <td>Returns the person's age. Throws an exception if the personal code is invalid.</td>
+     <td>Returns the person's age in years. Throws an exception if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getControlNumber</td>
