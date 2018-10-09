@@ -55,9 +55,7 @@ public final class Isikukood {
      * 2, 4, 6 - female.
      */
     private String parseGender(String personalCode) {
-        int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
-
-        switch (genderIdentifier) {
+        switch (getGenderIdentifier(personalCode)) {
             case 1:
             case 3:
             case 5:
@@ -76,9 +74,8 @@ public final class Isikukood {
      */
     private LocalDate parseDateOfBirth(String personalCode) {
         String dateString = personalCode.substring(1, 7);
-        int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
-        switch (genderIdentifier) {
+        switch (getGenderIdentifier(personalCode)) {
             case 1:
             case 2:
                 dateString = "18" + dateString;
@@ -139,5 +136,9 @@ public final class Isikukood {
         }
 
         return parsedControlNumber == Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
+    }
+
+    private int getGenderIdentifier(String personalCode) {
+        return Character.getNumericValue(personalCode.charAt(0));
     }
 }
