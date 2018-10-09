@@ -62,12 +62,8 @@ public final class Isikukood {
             case 3:
             case 5:
                 return "M";
-            case 2:
-            case 4:
-            case 6:
-                return "F";
             default:
-                return null;
+                return "F";
         }
     }
 
