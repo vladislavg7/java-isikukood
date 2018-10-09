@@ -7,7 +7,7 @@ The library is available on Maven Central and JCenter.
 ### Gradle
 ```groovy
 dependencies {
-    compile('com.github.vladislavgoltjajev:java-isikukood:1.5')
+    compile('com.github.vladislavgoltjajev:java-isikukood:1.6')
 }
 ```
 ### Maven
@@ -15,7 +15,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
 </dependency>
 ```
 
