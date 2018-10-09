@@ -80,6 +80,6 @@ class Test {
    </tr>
 </table>
 
-## Buy me a beer?
+## Buy me a beer? :beer:
 
 Please [donate](https://www.paypal.me/VladislavGoltjajev) if you like my work.
