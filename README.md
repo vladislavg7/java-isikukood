@@ -29,7 +29,7 @@ class Test {
         boolean isValid = isikukood.isValid();                      // true
         String gender = isikukood.getGender();                      // F
         LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
-        Integer age = isikukood.getAge();                           // 43
+        Integer age = isikukood.getAge();                           // 43 (dynamic)
         
         Isikukood invalidIsikukood = new Isikukood("123");
         isValid = invalidIsikukood.isValid();                       // false
@@ -70,7 +70,7 @@ class Test {
      <td>getGender</td>
      <td>-</td>
      <td>String</td>
-     <td>Returns the person's gender (**"M"** or "F"). Returns null if the personal code is invalid.</td>
+     <td>Returns the person's gender ("M" or "F"). Returns null if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getAge</td>
