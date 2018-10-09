@@ -79,3 +79,7 @@ class Test {
      <td>Returns the person's age in years. Returns null if the personal code is invalid.</td>
    </tr>
 </table>
+
+## Buy me a beer?
+
+Please [donate](paypal.me/VladislavGoltjajev) if you like my work.
