@@ -76,7 +76,7 @@ class Test {
      <td>getAge</td>
      <td>-</td>
      <td>Integer</td>
-     <td>Returns the person's age in years. Returns null if the personal code is invalid.</td>
+     <td>Returns the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
    </tr>
 </table>
 
