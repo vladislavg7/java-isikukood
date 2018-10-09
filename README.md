@@ -7,7 +7,7 @@ The library is available on Maven Central and JCenter.
 ### Gradle
 ```groovy
 dependencies {
-    compile('com.github.vladislavgoltjajev:java-isikukood:1.4')
+    compile('com.github.vladislavgoltjajev:java-isikukood:1.5')
 }
 ```
 ### Maven
@@ -15,7 +15,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
 </dependency>
 ```
 
@@ -26,19 +26,16 @@ class Test {
     
     public void test() {
         Isikukood isikukood = new Isikukood("47508030046");
-        Boolean isValid = isikukood.isValid();                      // true
-        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
+        boolean isValid = isikukood.isValid();                      // true
         String gender = isikukood.getGender();                      // F
-        Integer controlNumber = isikukood.getControlNumber();       // 6
+        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
+        Integer age = isikukood.getAge();                           // 43
         
         Isikukood invalidIsikukood = new Isikukood("123");
         isValid = invalidIsikukood.isValid();                       // false
-        
-        try {
-            dateOfBirth = invalidIsikukood.getDateOfBirth();        // throws IsikukoodException
-        } catch (IsikukoodException e) {
-            e.printStackTrace();
-        }
+        gender = isikukood.getGender();                             // null
+        dateOfBirth = isikukood.getDateOfBirth();                   // null
+        age = isikukood.getAge();                                   // null
     }
 }
 ```
@@ -60,31 +57,25 @@ class Test {
   <tr>
     <td>isValid</td>
     <td>-</td>
-    <td>Boolean</td>
+    <td>boolean</td>
     <td>Checks if the personal code is valid.</td>
   </tr>
   <tr>
     <td>getDateOfBirth</td>
     <td>-</td>
     <td>LocalDate</td>
-    <td>Returns the person's date of birth. Throws an exception if the personal code is invalid.</td>
+    <td>Returns the person's date of birth. Returns null if the personal code is invalid.</td>
   </tr>
   <tr>
      <td>getGender</td>
      <td>-</td>
      <td>String</td>
-     <td>Returns the person's gender ("M" or "F"). Throws an exception if the personal code is invalid.</td>
+     <td>Returns the person's gender (**"M"** or "F"). Returns null if the personal code is invalid.</td>
    </tr>
    <tr>
      <td>getAge</td>
      <td>-</td>
      <td>Integer</td>
-     <td>Returns the person's age in years. Throws an exception if the personal code is invalid.</td>
-   </tr>
-   <tr>
-     <td>getControlNumber</td>
-     <td>-</td>
-     <td>Integer</td>
-     <td>Returns the personal code's control number. Throws an exception if the personal code is invalid.</td>
+     <td>Returns the person's age in years. Returns null if the personal code is invalid.</td>
    </tr>
 </table>

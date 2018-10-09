@@ -67,49 +67,39 @@ public class IsikukoodTest {
             Isikukood isikukood = new Isikukood(personalCode);
             assertEquals("F", isikukood.getGender());
         }
+
+        Isikukood isikukood = new Isikukood("123");
+        assertNull(isikukood.getGender());
     }
 
     @Test
     public void getDateOfBirth() {
         Isikukood isikukood = new Isikukood("34503020000");
         LocalDate dateOfBirth = isikukood.getDateOfBirth();
+        assertNotNull(dateOfBirth);
         assertEquals(1945, dateOfBirth.getYear());
         assertEquals(3, dateOfBirth.getMonthValue());
         assertEquals(2, dateOfBirth.getDayOfMonth());
         isikukood = new Isikukood("29912120004");
         dateOfBirth = isikukood.getDateOfBirth();
+        assertNotNull(dateOfBirth);
         assertEquals(1899, dateOfBirth.getYear());
         assertEquals(12, dateOfBirth.getMonthValue());
         assertEquals(12, dateOfBirth.getDayOfMonth());
-    }
-
-    @Test
-    public void getControlNumber() {
-        Isikukood isikukood = new Isikukood("34503020000");
-        assertEquals(new Integer(0), isikukood.getControlNumber());
-        isikukood = new Isikukood("60302050016");
-        assertEquals(new Integer(6), isikukood.getControlNumber());
+        isikukood = new Isikukood("123");
+        dateOfBirth = isikukood.getDateOfBirth();
+        assertNull(dateOfBirth);
     }
 
     @Test
     public void getAge() {
         Isikukood isikukood = new Isikukood("34503020000");
+        assertNotNull(isikukood.getAge());
         assertTrue(isikukood.getAge() >= 73);
         isikukood = new Isikukood("60302050016");
+        assertNotNull(isikukood.getAge());
         assertTrue(isikukood.getAge() >= 15);
-    }
-
-    @Test
-    public void checkThrownException() {
-        Isikukood isikukood = new Isikukood("123");
-
-        try {
-            isikukood.getGender();
-        } catch (Exception e) {
-            assertEquals("IsikukoodException", e.getClass().getSimpleName());
-            return;
-        }
-
-        fail();
+        isikukood = new Isikukood("123");
+        assertNull(isikukood.getAge());
     }
 }

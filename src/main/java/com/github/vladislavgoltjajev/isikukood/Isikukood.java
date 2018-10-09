@@ -10,40 +10,43 @@ import java.util.stream.Collectors;
 
 public final class Isikukood {
 
-    private String personalCode;
     private String gender;
     private LocalDate dateOfBirth;
-    private Integer controlNumber;
+    private boolean isValid;
 
     public Isikukood(String personalCode) {
-        this.personalCode = personalCode;
-        parseAndSetData();
+        if (personalCode != null
+                && !personalCode.isEmpty()
+                && personalCode.matches("^[1-6]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{4}$")) {
+            gender = parseGender(personalCode);
+            dateOfBirth = parseDateOfBirth(personalCode);
+
+            if (dateOfBirth == null) {
+                isValid = false;
+            } else {
+                isValid = hasCorrectControlNumber(personalCode);
+            }
+        } else {
+            isValid = false;
+        }
     }
 
-    public Boolean isValid() {
-        return gender != null
-                && dateOfBirth != null
-                && controlNumber != null;
+    public boolean isValid() {
+        return isValid;
     }
 
     public String getGender() {
-        validate();
-        return gender;
+        return isValid ? gender : null;
     }
 
     public LocalDate getDateOfBirth() {
-        validate();
-        return dateOfBirth;
-    }
-
-    public Integer getControlNumber() {
-        validate();
-        return controlNumber;
+        return isValid ? dateOfBirth : null;
     }
 
     public Integer getAge() {
-        validate();
-        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+        LocalDate dateOfBirth = getDateOfBirth();
+        return isValid && dateOfBirth != null && !dateOfBirth.isAfter(LocalDate.now())
+                ? Period.between(dateOfBirth, LocalDate.now()).getYears() : null;
     }
 
     /**
@@ -51,17 +54,20 @@ public final class Isikukood {
      * 1, 3, 5 - male.
      * 2, 4, 6 - female.
      */
-    private void parseAndSetGender() {
+    private String parseGender(String personalCode) {
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
         switch (genderIdentifier) {
             case 1:
             case 3:
             case 5:
-                gender = "M";
-                break;
+                return "M";
+            case 2:
+            case 4:
+            case 6:
+                return "F";
             default:
-                gender = "F";
+                return null;
         }
     }
 
@@ -72,7 +78,7 @@ public final class Isikukood {
      * 3, 4 - years 1900-1999.
      * 5, 6 - years 2000-2099.
      */
-    private void parseAndSetDateOfBirth() {
+    private LocalDate parseDateOfBirth(String personalCode) {
         String dateString = personalCode.substring(1, 7);
         int genderIdentifier = Character.getNumericValue(personalCode.charAt(0));
 
@@ -92,9 +98,9 @@ public final class Isikukood {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
         try {
-            dateOfBirth = LocalDate.parse(dateString, formatter);
+            return LocalDate.parse(dateString, formatter);
         } catch (DateTimeParseException e) {
-            // Do nothing
+            return null;
         }
     }
 
@@ -107,7 +113,7 @@ public final class Isikukood {
      * [3, 4, 5, 6, 7, 8, 9, 1, 2, 3].
      * If the control number is 10 again, it is set to 0.
      */
-    private void parseAndSetControlNumber() {
+    private boolean hasCorrectControlNumber(String personalCode) {
         String[] numberArray = personalCode.substring(0, personalCode.length() - 1).split("");
         List<Integer> numberList = Arrays.stream(numberArray)
                 .map(Integer::valueOf)
@@ -136,28 +142,6 @@ public final class Isikukood {
             }
         }
 
-        if (parsedControlNumber == Character.getNumericValue(personalCode.charAt(personalCode.length() - 1))) {
-            controlNumber = parsedControlNumber;
-        }
-    }
-
-    private void parseAndSetData() {
-        if (personalCode != null
-                && !personalCode.isEmpty()
-                && personalCode.matches("^[1-6]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{4}$")) {
-            parseAndSetGender();
-            parseAndSetDateOfBirth();
-
-            // No need to calculate the control number if the personal code is already invalid
-            if (dateOfBirth != null) {
-                parseAndSetControlNumber();
-            }
-        }
-    }
-
-    private void validate() {
-        if (!isValid()) {
-            throw new IsikukoodException("Invalid Estonian personal identification code: " + personalCode);
-        }
+        return parsedControlNumber == Character.getNumericValue(personalCode.charAt(personalCode.length() - 1));
     }
 }
