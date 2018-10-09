@@ -82,4 +82,4 @@ class Test {
 
 ## Buy me a beer?
 
-Please [donate](paypal.me/VladislavGoltjajev) if you like my work.
+Please [donate](https://www.paypal.me/VladislavGoltjajev) if you like my work.
