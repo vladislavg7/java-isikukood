@@ -26,16 +26,16 @@ class Test {
     
     public static void main(String[] args) {
         Isikukood isikukood = new Isikukood("47508030046");
-        boolean isValid = isikukood.isValid();                      // true
-        String gender = isikukood.getGender();                      // F
-        LocalDate dateOfBirth = isikukood.getDateOfBirth();         // 1975-08-03
-        Integer age = isikukood.getAge();                           // 43 (dynamic)
+        boolean isValid = isikukood.isValid();               // true
+        String gender = isikukood.getGender();               // F
+        LocalDate dateOfBirth = isikukood.getDateOfBirth();  // 1975-08-03
+        Integer age = isikukood.getAge();                    // 43 (dynamic)
         
         Isikukood invalidIsikukood = new Isikukood("123");
-        isValid = invalidIsikukood.isValid();                       // false
-        gender = isikukood.getGender();                             // null
-        dateOfBirth = isikukood.getDateOfBirth();                   // null
-        age = isikukood.getAge();                                   // null
+        isValid = invalidIsikukood.isValid();                // false
+        gender = isikukood.getGender();                      // null
+        dateOfBirth = isikukood.getDateOfBirth();            // null
+        age = isikukood.getAge();                            // null
     }
 }
 ```
