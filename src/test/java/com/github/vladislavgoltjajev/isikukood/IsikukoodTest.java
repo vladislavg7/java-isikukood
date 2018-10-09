@@ -87,8 +87,7 @@ public class IsikukoodTest {
         assertEquals(12, dateOfBirth.getMonthValue());
         assertEquals(12, dateOfBirth.getDayOfMonth());
         isikukood = new Isikukood("123");
-        dateOfBirth = isikukood.getDateOfBirth();
-        assertNull(dateOfBirth);
+        assertNull(isikukood.getDateOfBirth());
     }
 
     @Test
