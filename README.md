@@ -24,7 +24,7 @@ The library requires at least Java 8.
 ```java
 class Test {
     
-    public void test() {
+    public static void main(String[] args) {
         Isikukood isikukood = new Isikukood("47508030046");
         boolean isValid = isikukood.isValid();                      // true
         String gender = isikukood.getGender();                      // F
