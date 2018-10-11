@@ -22,7 +22,7 @@ dependencies {
 ## Usage
 The library requires at least Java 8.
 ```java
-class Test {
+public class Test {
     
     public static void main(String[] args) {
         Isikukood isikukood = new Isikukood("47508030046");
