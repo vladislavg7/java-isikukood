@@ -19,10 +19,9 @@ public final class Isikukood {
     private static final LocalDate START_DATE = LocalDate.of(1800, Month.JANUARY, 1);
     private static final LocalDate END_DATE = LocalDate.of(2099, Month.DECEMBER, 31);
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
+    private boolean isValid;
     private String gender;
     private LocalDate dateOfBirth;
-    private boolean isValid;
 
     public Isikukood(String personalCode) {
         if (personalCode != null
@@ -93,52 +92,6 @@ public final class Isikukood {
 
         LocalDate dateOfBirth = getDateOfBirth();
         return !dateOfBirth.isAfter(LocalDate.now()) ? Period.between(dateOfBirth, LocalDate.now()).getYears() : null;
-    }
-
-    /**
-     * The first digit of the personal code shows the person's gender.
-     * 1, 3, 5- male.
-     * 2, 4, 6 - female.
-     */
-    private String parseGender(String personalCode) {
-        switch (getGenderIdentifier(personalCode)) {
-            case 1:
-            case 3:
-            case 5:
-                return MALE;
-            default:
-                return FEMALE;
-        }
-    }
-
-    /**
-     * Digits 2 through 7 of the personal code show the person's birth date in the format yyddMM.
-     * Using the first digit, it is possible to acquire the person's full year of birth.
-     * 1, 2 - years 1800-1899.
-     * 3, 4 - years 1900-1999.
-     * 5, 6 - years 2000-2099.
-     */
-    private LocalDate parseDateOfBirth(String personalCode) {
-        String dateString = personalCode.substring(1, 7);
-
-        switch (getGenderIdentifier(personalCode)) {
-            case 1:
-            case 2:
-                dateString = "18" + dateString;
-                break;
-            case 3:
-            case 4:
-                dateString = "19" + dateString;
-                break;
-            default:
-                dateString = "20" + dateString;
-        }
-
-        try {
-            return LocalDate.parse(dateString, dateFormatter);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
     }
 
     /**
@@ -215,6 +168,52 @@ public final class Isikukood {
 
     private static int generateRandomBirthOrderNumber() {
         return new Random().nextInt(1000);
+    }
+
+    /**
+     * The first digit of the personal code shows the person's gender.
+     * 1, 3, 5- male.
+     * 2, 4, 6 - female.
+     */
+    private String parseGender(String personalCode) {
+        switch (getGenderIdentifier(personalCode)) {
+            case 1:
+            case 3:
+            case 5:
+                return MALE;
+            default:
+                return FEMALE;
+        }
+    }
+
+    /**
+     * Digits 2 through 7 of the personal code show the person's birth date in the format yyddMM.
+     * Using the first digit, it is possible to acquire the person's full year of birth.
+     * 1, 2 - years 1800-1899.
+     * 3, 4 - years 1900-1999.
+     * 5, 6 - years 2000-2099.
+     */
+    private LocalDate parseDateOfBirth(String personalCode) {
+        String dateString = personalCode.substring(1, 7);
+
+        switch (getGenderIdentifier(personalCode)) {
+            case 1:
+            case 2:
+                dateString = "18" + dateString;
+                break;
+            case 3:
+            case 4:
+                dateString = "19" + dateString;
+                break;
+            default:
+                dateString = "20" + dateString;
+        }
+
+        try {
+            return LocalDate.parse(dateString, dateFormatter);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     private int getGenderIdentifier(String personalCode) {
