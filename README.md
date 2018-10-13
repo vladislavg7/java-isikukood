@@ -1,6 +1,6 @@
 # java-isikukood [![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
 
-Extract personal data from an Estonian personal identification code (isikukood) with this lightweight library.
+Extract personal data from and generate Estonian personal identification codes (isikukood) with this lightweight library.
 
 ## Import
 The library is available on Maven Central and JCenter.
@@ -41,14 +41,13 @@ public class Test {
         LocalDate dateOfBirth = LocalDate.of(1984, 3, 15);
         String generatedPersonalCode = Isikukood.generatePersonalCode(gender, dateOfBirth); // 38403153949
         generatedPersonalCode = Isikukood.generatePersonalCode(gender, dateOfBirth, 7);     // 38403150076
+        String randomPersonalCode = Isikukood.generateRandomPersonalCode();                 // 35207049817
         
         try {
             Isikukood.generatePersonalCode("A", LocalDate.of(1799, 1, 1)); // Throws exception
         } catch (IsikukoodException e) {
             // Handle exception
         }
-        
-        String randomPersonalCode = Isikukood.generateRandomPersonalCode(); // 35207049817
     }
 }
 ```
