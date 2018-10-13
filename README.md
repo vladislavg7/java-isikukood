@@ -56,55 +56,46 @@ public class Test {
 <table class="table1">
   <tr>
     <th>Method</th>
-    <th>Arguments</th>
     <th>Return type</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>Isikukood</td>
-    <td>String personalCode</td>
+    <td>Isikukood(String personalCode)</td>
     <td>Isikukood</td>
     <td>Creates an instance of the Isikukood object.</td>
   </tr>
   <tr>
-    <td>generatePersonalCode (static)</td>
-    <td>String gender, LocalDate dateOfBirth</td>
+    <td>static generatePersonalCode(String gender, LocalDate dateOfBirth)</td>
     <td>String</td>
     <td>Generates a personal code for the specified gender and date of birth. Throws an exception if the gender is not "M" or "F" or the birth year is before 1800 or after 2099.</td>
   </tr>
   <tr>
-    <td>generatePersonalCode (static)</td>
-    <td>String gender, LocalDate dateOfBirth, int birthOrderNumber</td>
+    <td>static generatePersonalCode(String gender, LocalDate dateOfBirth, int birthOrderNumber)</td>
     <td>String</td>
     <td>Generates a personal code for the specified gender,date of birth and birth order number. Throws an exception if the gender is not "M" or "F", the birth year is before 1800 or after 2099 or the birth order number is less than 0 or more than 999.</td>
   </tr>
   <tr>
-    <td>generateRandomPersonalCode (static)</td>
-    <td>-</td>
+    <td>static generateRandomPersonalCode()</td>
     <td>String</td>
     <td>Generates a random personal code.</td>
   </tr>
   <tr>
-    <td>isValid</td>
-    <td>-</td>
+    <td>isValid()</td>
     <td>boolean</td>
     <td>Returns whether or not the personal code is valid.</td>
   </tr>
   <tr>
-    <td>getDateOfBirth</td>
-    <td>-</td>
+    <td>getDateOfBirth()</td>
     <td>LocalDate</td>
     <td>Returns the person's date of birth. Returns null if the personal code is invalid.</td>
   </tr>
   <tr>
-    <td>getGender</td>
-    <td>-</td>
+    <td>getGender()</td>
     <td>String</td>
     <td>Returns the person's gender ("M" or "F"). Returns null if the personal code is invalid.</td>
   </tr>
   <tr>
-    <td>getAge</td>
-    <td>-</td>
+    <td>getAge()</td>
     <td>Integer</td>
     <td>Returns the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
   </tr>
