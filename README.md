@@ -53,6 +53,25 @@ public class Test {
 ```
 
 ## API
+### Field summary
+<table class="table1">
+  <tr>
+    <th>Modifier and type</th>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>static String</td>
+    <td>MALE</td>
+    <td>Male gender classifier "M".</td>
+  </tr>
+  <tr>
+    <td>static String</td>
+    <td>FEMALE</td>
+    <td>Female gender classifier "F".</td>
+  </tr>
+</table>
+
 ### Constructor summary
 <table class="table1">
   <tr>
