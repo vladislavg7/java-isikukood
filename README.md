@@ -1,4 +1,4 @@
-# java-isikukood [![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion)
+# java-isikukood [![Download](https://api.bintray.com/packages/vladislavg/java-isikukood/java-isikukood/images/download.svg)](https://bintray.com/vladislavg/java-isikukood/java-isikukood/_latestVersion) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/vladislavgoltjajev/java-isikukood/blob/master/LICENSE) 
 
 Extract personal data from and generate Estonian personal identification codes (isikukood) with this lightweight library.
 
