@@ -14,7 +14,7 @@ public final class EstonianId {
     public static final String MALE = "M";
     public static final String FEMALE = "F";
 
-    private boolean valid = false;
+    private boolean valid;
     private String gender;
     private LocalDate dateOfBirth;
 
