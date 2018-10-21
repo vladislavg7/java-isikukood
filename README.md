@@ -3,7 +3,8 @@
 Extract personal data from and generate Estonian personal identification codes (isikukood) with this lightweight library.
 
 ## Import
-The library is available on Maven Central and JCenter.
+The library is available on Maven Central and JCenter.  
+JDK 8 or higher is required for the library to work.
 ### Gradle
 ```groovy
 dependencies {
@@ -18,7 +19,6 @@ dependencies {
     <version>2.0</version>
 </dependency>
 ```
-The library requires JDK 8 or higher.
 
 ## Usage
 ```java
