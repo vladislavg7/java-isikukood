@@ -7,7 +7,7 @@ The library is available on Maven Central and JCenter.
 ### Gradle
 ```groovy
 dependencies {
-    compile('com.github.vladislavgoltjajev:java-isikukood:1.7')
+    compile('com.github.vladislavgoltjajev:java-isikukood:2.0')
 }
 ```
 ### Maven
@@ -15,38 +15,38 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>1.7</version>
+    <version>2.0</version>
 </dependency>
 ```
 
 ## Usage
-The library requires at least Java 8.
+The library requires JDK 8 or higher.
 ```java
 public class Test {
 
     public static void main(String[] args) {
-        Isikukood personalCode = new Isikukood("47508030046");
-        boolean isValid = personalCode.isValid();               // true
-        String gender = personalCode.getGender();               // F
-        LocalDate dateOfBirth = personalCode.getDateOfBirth();  // 1975-08-03
-        Integer age = personalCode.getAge();                    // 43
+        EstonianId estonianId = new EstonianId("47508030046");
+        boolean isValid = estonianId.isValid();                 // true
+        String gender = estonianId.getGender();                 // F
+        LocalDate dateOfBirth = estonianId.getDateOfBirth();    // 1975-08-03
+        Integer age = estonianId.getAge();                      // 43
 
-        Isikukood invalidPersonalCode = new Isikukood("123");
-        isValid = invalidPersonalCode.isValid();                // false
-        gender = invalidPersonalCode.getGender();               // null
-        dateOfBirth = invalidPersonalCode.getDateOfBirth();     // null
-        age = invalidPersonalCode.getAge();                     // null
+        EstonianId invalidEstonianId = new EstonianId("123");
+        isValid = invalidEstonianId.isValid();                  // false
+        gender = invalidEstonianId.getGender();                 // null
+        dateOfBirth = invalidEstonianId.getDateOfBirth();       // null
+        age = invalidEstonianId.getAge();                       // null
 
-        gender = Isikukood.MALE;
-        dateOfBirth = LocalDate.of(1984, 3, 15);
-        String generatedPersonalCode = Isikukood.generatePersonalCode(gender, dateOfBirth); // 38403153949
-        generatedPersonalCode = Isikukood.generatePersonalCode(gender, dateOfBirth, 7);     // 38403150076
-        String randomPersonalCode = Isikukood.generateRandomPersonalCode();                 // 35207049817
+        String personalCode = EstonianId.generateRandomPersonalCode(); // 35207049817
 
         try {
-            Isikukood.generatePersonalCode("A", LocalDate.of(1799, 1, 1)); // Throws exception
-        } catch (IsikukoodException e) {
-            // Handle exception
+            gender = EstonianId.MALE;
+            dateOfBirth = LocalDate.of(1984, 3, 15);
+            personalCode = EstonianId.generatePersonalCode(gender, dateOfBirth);           // 38403153949
+            personalCode = EstonianId.generatePersonalCode(gender, dateOfBirth, 7);        // 38403150076
+            personalCode = EstonianId.generatePersonalCode("A", LocalDate.of(1799, 1, 1)); // Throws exception.
+        } catch (EstonianIdException e) {
+            // Handle exception.
         }
     }
 }
@@ -55,77 +55,77 @@ public class Test {
 ## API
 ### Field summary
 <table class="table1">
-  <tr>
-    <th>Modifier and type</th>
-    <th>Field</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>static String</td>
-    <td>MALE</td>
-    <td>Male gender classifier "M".</td>
-  </tr>
-  <tr>
-    <td>static String</td>
-    <td>FEMALE</td>
-    <td>Female gender classifier "F".</td>
-  </tr>
+    <tr>
+        <th>Modifier and type</th>
+        <th>Field</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>static String</td>
+        <td>FEMALE</td>
+        <td>Female gender classifier "F".</td>
+    </tr>
+    <tr>
+        <td>static String</td>
+        <td>MALE</td>
+        <td>Male gender classifier "M".</td>
+    </tr>
 </table>
 
 ### Constructor summary
 <table class="table1">
-  <tr>
-    <th>Constructor</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>Isikukood(String personalCode)</td>
-    <td>Constructs a new Isikukood object using the specified personal code.</td>
-  </tr>
+    <tr>
+        <th>Constructor</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>EstonianId(String personalCode)</td>
+        <td>Constructs a new EstonianId object using the specified personal code.</td>
+    </tr>
 </table>
 
 ### Method summary
 <table class="table1">
-  <tr>
-    <th>Modifier and type</th>
-    <th>Method</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>static String</td>
-    <td>generatePersonalCode(String gender, LocalDate dateOfBirth)</td>
-    <td>Generates a personal code using the specified gender and date of birth. Throws an exception if the gender is not "M" or "F" or the birth year is before 1800 or after 2099.</td>
-  </tr>
-  <tr>
-    <td>static String</td>
-    <td>generatePersonalCode(String gender, LocalDate dateOfBirth, int birthOrderNumber)</td>
-    <td>Generates a personal code using the specified gender, date of birth and birth order number. Throws an exception if the gender is not "M" or "F", the birth year is before 1800 or after 2099 or the birth order number is less than 0 or more than 999.</td>
-  </tr>
-  <tr>
-    <td>static String</td>
-    <td>generateRandomPersonalCode()</td>
-    <td>Generates a random personal code.</td>
-  </tr>
-  <tr>
-    <td>boolean</td>
-    <td>isValid()</td>
-    <td>Returns whether or not the personal code is valid.</td>
-  </tr>
-  <tr>
-    <td>LocalDate</td>
-    <td>getDateOfBirth()</td>
-    <td>Returns the person's date of birth. Returns null if the personal code is invalid.</td>
-  </tr>
-  <tr>
-    <td>String</td>
-    <td>getGender()</td>
-    <td>Returns the person's gender ("M" or "F"). Returns null if the personal code is invalid.</td>
-  </tr>
-  <tr>
-    <td>Integer</td>
-    <td>getAge()</td>
-    <td>Returns the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
-  </tr>
+    <tr>
+        <th>Modifier and type</th>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>static String</td>
+        <td>generatePersonalCode(String gender, LocalDate dateOfBirth)</td>
+        <td>Generates a personal code using the specified gender and date of birth. Throws an exception if the gender is not "M" or "F" or the birth year is before 1800 or after 2099.</td>
+    </tr>
+    <tr>
+        <td>static String</td>
+        <td>generatePersonalCode(String gender, LocalDate dateOfBirth, int birthOrderNumber)</td>
+        <td>Generates a personal code using the specified gender, date of birth and birth order number. Throws an exception if the gender is not "M" or "F", the birth year is before 1800 or after 2099 or the birth order number is less than 0 or more than 999.</td>
+    </tr>
+    <tr>
+        <td>static String</td>
+        <td>generateRandomPersonalCode()</td>
+        <td>Generates a random personal code.</td>
+    </tr>
+    <tr>
+        <td>Integer</td>
+        <td>getAge()</td>
+        <td>Returns the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
+    </tr>
+    <tr>
+        <td>LocalDate</td>
+        <td>getDateOfBirth()</td>
+        <td>Returns the person's date of birth. Returns null if the personal code is invalid.</td>
+    </tr>
+    <tr>
+        <td>String</td>
+        <td>getGender()</td>
+        <td>Returns the person's gender ("M" or "F"). Returns null if the personal code is invalid.</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>isValid()</td>
+        <td>Returns whether or not the personal code is valid.</td>
+    </tr>
 </table>
 
 ## Buy me a beer? :beer:
