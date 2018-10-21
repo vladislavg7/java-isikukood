@@ -18,9 +18,9 @@ dependencies {
     <version>2.0</version>
 </dependency>
 ```
+The library requires JDK 8 or higher.
 
 ## Usage
-The library requires JDK 8 or higher.
 ```java
 public class Test {
 
