@@ -109,7 +109,7 @@ public class Test {
     <tr>
         <td>Integer</td>
         <td>getAge()</td>
-        <td>Returns the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
+        <td>Calculates the person's age in years. Returns null if the personal code is invalid or the date of birth is in the future.</td>
     </tr>
     <tr>
         <td>LocalDate</td>
