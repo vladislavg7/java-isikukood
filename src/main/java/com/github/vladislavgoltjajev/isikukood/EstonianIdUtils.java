@@ -21,15 +21,14 @@ import static com.github.vladislavgoltjajev.isikukood.EstonianId.MALE;
 @UtilityClass
 final class EstonianIdUtils {
 
-    private static final LocalDate START_DATE = LocalDate.of(1800, Month.JANUARY, 1);
-    private static final LocalDate END_DATE = LocalDate.of(2099, Month.DECEMBER, 31);
+    private static final LocalDate MINIMUM_DATE = LocalDate.of(1800, Month.JANUARY, 1);
+    private static final LocalDate MAXIMUM_DATE = LocalDate.of(2099, Month.DECEMBER, 31);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuuMMdd")
             .withResolverStyle(ResolverStyle.STRICT);
-    private static final Random RANDOM = new Random();
     private static final String PERSONAL_CODE_REGEX = "^[1-6]\\d{2}(((0[13578]|1[02])(0[1-9]|[12]\\d|3[01]))"
             + "|((0[469]|11)(0[1-9]|[12]\\d|30))"
             + "|(02(0[1-9]|1\\d|2[0-9])))"
-            + "\\d{4}$"; // Does not handle leap years.
+            + "\\d{4}$";
 
     static boolean initialValidationPassed(String personalCode) {
         return personalCode != null
@@ -52,9 +51,9 @@ final class EstonianIdUtils {
             throw new EstonianIdException(String.format("Gender must be \"%s\" or \"%s\"", MALE, FEMALE));
         }
 
-        if (dateOfBirth == null || dateOfBirth.isBefore(START_DATE) || dateOfBirth.isAfter(END_DATE)) {
-            throw new EstonianIdException(String.format("Birth year must be between %d and %d", START_DATE.getYear(),
-                    END_DATE.getYear()));
+        if (dateOfBirth == null || dateOfBirth.isBefore(MINIMUM_DATE) || dateOfBirth.isAfter(MAXIMUM_DATE)) {
+            throw new EstonianIdException(String.format("Birth year must be between %d and %d", MINIMUM_DATE.getYear(),
+                    MAXIMUM_DATE.getYear()));
         }
 
         if (birthOrderNumber < 0 || birthOrderNumber > 999) {
@@ -63,7 +62,7 @@ final class EstonianIdUtils {
 
         String personalCodeWithoutControlNumber = calculateGenderIdentifier(gender, dateOfBirth)
                 + dateOfBirth.format(DATE_FORMATTER).substring(2)
-                + String.format("%03d", birthOrderNumber);
+                + String.format("%03d", birthOrderNumber); // Add padding zeroes.
         return personalCodeWithoutControlNumber + calculateControlNumber(personalCodeWithoutControlNumber);
     }
 
@@ -138,7 +137,7 @@ final class EstonianIdUtils {
      * summing up each result and calculating the remainder of the sum divided by 11.
      * If the resulting control number is 10, the process is repeated with a different array of multipliers
      * [3, 4, 5, 6, 7, 8, 9, 1, 2, 3].
-     * If the control number is 10 again, it is set to 0.
+     * If the resulting control number is 10 again, the person's control number is set to 0.
      */
     private static int calculateControlNumber(String personalCode) {
         String[] numberArray = personalCode.substring(0, 10).split("");
@@ -187,40 +186,31 @@ final class EstonianIdUtils {
      */
     private static int calculateGenderIdentifier(String gender, LocalDate dateOfBirth) {
         int birthYear = dateOfBirth.getYear();
-
-        if (MALE.equalsIgnoreCase(gender)) {
-            if (birthYear >= 1800 && birthYear <= 1899) {
-                return 1;
-            } else if (birthYear >= 1900 && birthYear <= 1999) {
-                return 3;
-            }
-
-            return 5;
-        }
+        boolean isMale = MALE.equalsIgnoreCase(gender);
 
         if (birthYear >= 1800 && birthYear <= 1899) {
-            return 2;
+            return isMale ? 1 : 2;
         } else if (birthYear >= 1900 && birthYear <= 1999) {
-            return 4;
+            return isMale ? 3 : 4;
         }
 
-        return 6;
+        return isMale ? 5 : 6;
     }
 
     private static String getRandomGender() {
-        return RANDOM.nextInt(2) == 0 ? MALE : FEMALE;
+        return new Random().nextInt(2) == 0 ? MALE : FEMALE;
     }
 
     /**
      * Generates a random date between the earliest and latest possible birth dates (inclusive).
      */
     private static LocalDate generateRandomDateOfBirth() {
-        int days = (int) ChronoUnit.DAYS.between(START_DATE, END_DATE);
-        return START_DATE.plusDays(RANDOM.nextInt(days + 1));
+        int daysBetween = (int) ChronoUnit.DAYS.between(MINIMUM_DATE, MAXIMUM_DATE);
+        return MINIMUM_DATE.plusDays(new Random().nextInt(daysBetween + 1));
     }
 
     private static int generateRandomBirthOrderNumber() {
-        return RANDOM.nextInt(1000);
+        return new Random().nextInt(1000);
     }
 
     /**

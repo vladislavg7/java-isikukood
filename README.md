@@ -8,7 +8,7 @@ JDK 8 or higher is required for the library to work.
 ### Gradle
 ```groovy
 dependencies {
-    compile('com.github.vladislavgoltjajev:java-isikukood:2.0')
+    compile('com.github.vladislavgoltjajev:java-isikukood:2.1')
 }
 ```
 ### Maven
@@ -16,7 +16,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vladislavgoltjajev</groupId>
     <artifactId>java-isikukood</artifactId>
-    <version>2.0</version>
+    <version>2.1</version>
 </dependency>
 ```
 
