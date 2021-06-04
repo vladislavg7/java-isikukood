@@ -1,5 +1,5 @@
 :exclamation::exclamation::exclamation:
-# Library is no longer supported
+## Library is no longer supported
 Development moved to [this](https://github.com/vladislavgoltjajev/java-personal-code) repo.  
 :exclamation::exclamation::exclamation:
 
