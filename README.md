@@ -1,7 +1,5 @@
-:exclamation::exclamation::exclamation:
-### Library is no longer supported
-Development moved to [this](https://github.com/vladislavgoltjajev/java-personal-code) repo.  
-:exclamation::exclamation::exclamation:
+# :exclamation::exclamation::exclamation: Library is no longer supported :exclamation::exclamation::exclamation:
+Development moved to [this](https://github.com/vladislavgoltjajev/java-personal-code) repo.
 
 # java-isikukood
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/vladislavgoltjajev/java-isikukood/blob/master/LICENSE) 
